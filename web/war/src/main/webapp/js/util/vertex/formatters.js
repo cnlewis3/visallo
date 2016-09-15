@@ -168,7 +168,16 @@ define([
                 link: function(el, property, vertex) {
                     var anchor = document.createElement('a'),
                         value = V.prop(vertex, property.name),
-                        href = $.trim(value);
+                        href = $.trim(value),
+                        text;
+
+                    if (href) {
+                        var m = href.match(/^\[(.*?)\]\((.*)\)$/);
+                        if (m) {
+                            text = m[1];
+                            href = m[2];
+                        }
+                    }
 
                     if (!(/^http/).test(href)) {
                         href = 'http://' + href;
@@ -176,7 +185,7 @@ define([
 
                     anchor.setAttribute('href', href);
                     anchor.setAttribute('target', '_blank');
-                    anchor.textContent = href;
+                    anchor.textContent = text || href;
 
                     el.appendChild(anchor);
                 },
